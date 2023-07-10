@@ -1,0 +1,155 @@
+[
+  {
+    "musicId": 0,
+    "band": "Coldplay",
+    "album": "A Rush of Blood to - the Head",
+    "music": "The Scientist",
+    "albumImage": "coldplay_a_rush.jpeg",
+    "musicPlay": "the_scientist.mp3",
+    "time": "5:19"
+  },
+  {
+    "musicId": 1,
+    "band": "The Calling",
+    "album": "Camino Palmero",
+    "music": "Wherever You Will Go",
+    "albumImage": "the_calling1.jpeg",
+    "musicPlay": "wherever_you_will_go.mp3",
+    "time": "3:30"
+  },
+  {
+    "musicId": 2,
+    "band": "Keane",
+    "album": "Hopes and Fears",
+    "music": "Bedshaped",
+    "albumImage": "keane.jpeg",
+    "musicPlay": "bedshaped.mp3",
+    "time": "4:41"
+  },
+  {
+    "musicId": 3,
+    "band": "The Cramberries",
+    "album": "To the Faithful Departed",
+    "music": "When You're Gone",
+    "albumImage": "the_cramberries.jpeg",
+    "musicPlay": "when_youre_gone.mp3",
+    "time": "4:20"
+  },
+  {
+    "musicId": 4,
+    "band": "Firehouse",
+    "album": "Good Acoustics",
+    "music": "When I look into Your Eyes",
+    "albumImage": "firehouse.jpeg",
+    "musicPlay": "when_i_look_into_your_eyes.mp3",
+    "time": "4:09"
+  },
+  {
+    "musicId": 5,
+    "band": "Roxette",
+    "album": "Greatest Hits",
+    "music": "It Must Heave Been Love",
+    "albumImage": "roxette2.jpeg",
+    "musicPlay": "it_must_heave_been_love.mp3",
+    "time": "4:15"
+  },
+  {
+    "musicId": 6,
+    "band": "Radiohead",
+    "album": "The Bends",
+    "music": "Fake Plastic Trees",
+    "albumImage": "radiohead.jpeg",
+    "musicPlay": "fake_plastic_trees.mp3",
+    "time": "4:51"
+  },
+  {
+    "musicId": 7,
+    "band": "Bread",
+    "album": "The best of Bread",
+    "music": "Everything I Own",
+    "albumImage": "bread.jpeg",
+    "musicPlay": "everything_i_own.mp3",
+    "time": "3:06"
+  },
+  {
+    "musicId": 8,
+    "band": "Bryan Adams",
+    "album": "MTV Unplugged",
+    "music": "Heaven",
+    "albumImage": "bryan_adams.jpeg",
+    "musicPlay": "heaven.mp3",
+    "time": "4:12"
+  },
+  {
+    "musicId": 9,
+    "band": "The Police",
+    "album": "Greatest Hits",
+    "music": "Every Breath you Take",
+    "albumImage": "the_police.jpeg",
+    "musicPlay": "every_breath_you_take.mp3",
+    "time": "4:14"
+  },
+  {
+    "musicId": 10,
+    "band": "U2",
+    "album": "Greatest Hits",
+    "music": "One",
+    "albumImage": "u2_album.jpeg",
+    "musicPlay": "one.mp3",
+    "time": "4:33"
+  },
+  {
+    "musicId": 11,
+    "band": "Koda",
+    "album": "Myrina",
+    "music": "Hands",
+    "albumImage": "koda1.jpeg",
+    "musicPlay": "hands.mp3",
+    "time": "5:16"
+  },
+  {
+    "musicId": 12,
+    "band": "The Verve",
+    "album": "Urban Hymns",
+    "music": "The Drug's Don't Work",
+    "albumImage": "the_verve.jpeg",
+    "musicPlay": "the_drugs_dont_work.mp3",
+    "time": "5:05"
+  },
+  {
+    "musicId": 13,
+    "band": "Scorpions",
+    "album": "Best of Collection",
+    "music": "Wind of Change",
+    "albumImage": "scorpions2.jpeg",
+    "musicPlay": "wind_of_change.mp3",
+    "time": "4:42"
+  },
+  {
+    "musicId": 14,
+    "band": "U2",
+    "album": "Best of Collection",
+    "music": "With of Without You",
+    "albumImage": "u2_2.jpeg",
+    "musicPlay": "with_or_without_you.mp3",
+    "time": "4:59"
+  },
+  {
+    "musicId": 15,
+    "band": "Oasis",
+    "album": "Best of Collection",
+    "music": "Stop Crying Your Heart Out",
+    "albumImage": "oasis1.jpeg",
+    "musicPlay": "stop_crying_your_heart.mp3",
+    "time": "4:04"
+  },
+  {
+    "musicId": 16,
+    "band": "Alphaville",
+    "album": "Best of Collection",
+    "music": "Forever Young",
+    "albumImage": "alphaville.png",
+    "musicPlay": "forever_young.mp3",
+    "time": "3:37"
+  }
+]
