@@ -169,6 +169,15 @@ mixin _$PickerFileController on _PickerFileController, Store {
     return _$deleteFileAsyncAction.run(() => super.deleteFile(musicPlaylist));
   }
 
+  late final _$undoDeleteAsyncAction =
+      AsyncAction('_PickerFileController.undoDelete', context: context);
+
+  @override
+  Future undoDelete(int index, MusicPlaylistModel musicPlaylist) {
+    return _$undoDeleteAsyncAction
+        .run(() => super.undoDelete(index, musicPlaylist));
+  }
+
   late final _$_PickerFileControllerActionController =
       ActionController(name: '_PickerFileController', context: context);
 

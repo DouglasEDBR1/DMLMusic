@@ -9,7 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import '../../controllers/music_player_controller.dart';
 import '../../controllers/picker_file_controller.dart';
-import '../../models/playlist_model.dart';
+import '../../models/music_playlist_model.dart';
 import 'methods/icon_animated.dart';
 
 import 'dart:io';
@@ -209,7 +209,7 @@ class _PlaylistLocalScreenState extends State<PlaylistLocalScreen> {
                 ContainerPlus(
                   padding: const EdgeInsets.only(top: 40, left: 24, right: 24, bottom: 34),
                   radius: RadiusPlus.all(20),
-                  color: Colors.black.withOpacity(0.72),
+                  color: Colors.black.withOpacity(0.96),
                   child: ContainerPlus(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -418,8 +418,7 @@ class _PlaylistLocalScreenState extends State<PlaylistLocalScreen> {
                 mediaPlayerController.setMyPlaylist(musicPlaylist.music!);
                 mediaPlayerController.setMusicPlaylist(musicPlaylist.musicPlay);
                 if (musicPlaylist.albumImage != null) {
-                  mediaPlayerController
-                      .setMyPlaylistImage(musicPlaylist.albumImage);
+                  mediaPlayerController.setMyPlaylistImage(musicPlaylist.albumImage);
                 }
               },
               child: Row(
@@ -427,7 +426,7 @@ class _PlaylistLocalScreenState extends State<PlaylistLocalScreen> {
                 children: [
                   Row(
                     children: [
-                      TextPlus(musicPlaylist.id.toString(), color: Colors.white,),
+                      TextPlus(musicPlaylist.id.toString(), color: Colors.white, margin: const EdgeInsets.only(right: 16)),
                       ContainerPlus(
                           radius: RadiusPlus.all(16),
                           width: 54,

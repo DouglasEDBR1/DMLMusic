@@ -1,10 +1,12 @@
+import 'package:dml_music/controllers/video_player_controller.dart';
+import 'package:dml_music/screens/video/search_video_screen.dart';
 import 'package:dml_music/screens/video/video_media_play.dart';
 import 'package:dml_music/widget/background_layout.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_plus/flutter_plus.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:miniplayer/miniplayer.dart';
-import '../../controllers/music_video_controller.dart';
 import '../../models/video_model.dart';
 import 'methods/custom_search_video.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -19,15 +21,27 @@ class HomeVideoScreen extends StatefulWidget {
 class _HomeVideoScreenState extends State<HomeVideoScreen> {
 
   final MiniplayerController controller = MiniplayerController();
+  final VideoPlayerController _videoPlayerController = VideoPlayerController();
   final ValueNotifier<double> playerExpandProgress = ValueNotifier(10);
 
-  _listVideos(String search){
-    Api api = Api();
-    return api.search(search);
-  }
+  // _listVideos(String search){
+  //   // Api api = Api();
+  //   // _videoPlayerController.setSearchVideoResult(search);
+  //   // return api.search(search);
+  //   // return _videoPlayerController.getVideo();
+  // }
 
   dynamic _videoId;
-  String _result = '';
+
+  init() async {
+    await _videoPlayerController.init();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,126 +73,169 @@ class _HomeVideoScreenState extends State<HomeVideoScreen> {
   // #############    FUTUREBUILDER BODY   ################
 
   Widget bodyBuilder(){
-    return ContainerPlus(
-      width: double.infinity,
-      height: double.infinity,
-      color: Colors.black87,
-      child: Stack(
-        children: [
-         const BackgroundLayout(),
-          ContainerPlus(
-            padding: const EdgeInsets.only(top: 8),
-            width: double.infinity,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 60, left: 10, right: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ContainerPlus(
-                            child: TextPlus(
-                              'VIDEOS',
-                              fontSize: 24,
-                              fontWeight: FontWeight.w900,
-                              color: Colors.deepPurple,
+    return Observer(builder: (_) => ContainerPlus(
+        width: double.infinity,
+        height: double.infinity,
+        color: Colors.black87,
+        child: Stack(
+          children: [
+           const BackgroundLayout(),
+            ContainerPlus(
+              padding: const EdgeInsets.only(top: 8),
+              width: double.infinity,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 60, left: 10, right: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ContainerPlus(
+                              child: TextPlus(
+                                'VIDEOS',
+                                fontSize: 24,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.deepPurple,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 6,),
-                          TextPlus(
-                            'COLEÇÕES',
-                            fontSize: 28,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
+                            const SizedBox(height: 6,),
+                            TextPlus(
+                              'COLEÇÕES',
+                              fontSize: 28,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
 
-                          ),
-                        ],
-                      ),
-                      InkWell(
-                        onTap: () async {
-                          String? resultSearch = await showSearch(context: context, delegate: CustomSeachDelegate());
-                          setState(() {
-                            _result = resultSearch!;
-                          });
-                        },
-                        child: const Icon(
-                          Icons.search_rounded,
-                          color: Colors.white,
-                          size: 44,
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 14,),
-                Expanded(
-                  child: ContainerPlus(
-                    //color: Colors.red,
-                    child: FutureBuilder<List<Video>?>(
-                        future: _listVideos(_result),
-                        builder:(context, snapshot){
-                          switch (snapshot.connectionState){
-                            case ConnectionState.none:
-                            case ConnectionState.waiting:
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            case ConnectionState.active:
-                            case ConnectionState.done:
-                              if( snapshot.hasData ){
-                                return ListView.builder(
-                                  padding: const EdgeInsets.all(4),
-                                  physics: const BouncingScrollPhysics(),
-                                  addAutomaticKeepAlives: true,
-                                  itemCount: snapshot.data?.length,
-                                  itemBuilder: (context, index){
+                        InkWell(
+                          onTap: () {
+                            //Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchVideoScreen()));
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SearchVideoScreen()));
 
-                                    List<Video>? videos = snapshot.data;
-                                    Video? video = videos![index];
-
-                                    return AnimationConfiguration.staggeredGrid(
-                                      columnCount: 2,
-                                      position: index,
-                                      duration: const Duration(milliseconds: 375),
-                                      child: GestureDetector(
-                                          onTap: (){
-                                            _videoId = video.id;
-                                            displayDialog(context, VideoMediaPlayer(videoId: video.id!));
-                                          },
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: ContainerPlus(
-                                                  //     color: Colors.red,
-                                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                                                    child: listVideos(video.id, video.image, video.title, index)
-                                                ),
-                                              ),
-                                            ],
-                                          )
-                                      ),
-                                    );
-                                  },
-                                );
-                              }else{
-                                // return listVideos();
-                                return const Center(
-                                  child: Text('Nenhum dado encontrado!'),
-                                );
-                              }
-                          }
-                        }
+                            // String? resultSearch = await showSearch(context: context, delegate: CustomSeachDelegate());
+                            // setState(() {
+                            //   _result = resultSearch!;
+                            //   _videoPlayerController.setSearchVideoResult(_result);
+                            // });
+                          },
+                          child: const Icon(
+                            Icons.search_rounded,
+                            color: Colors.white,
+                            size: 44,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 14),
+                  Expanded(
+                    child: _videoPlayerController.videoList.isNotEmpty ? ContainerPlus(
+                      // color: Colors.red,
+                      child: ListView.builder(
+                        padding: const EdgeInsets.all(4),
+                        physics: const BouncingScrollPhysics(),
+                        addAutomaticKeepAlives: true,
+                        itemCount: _videoPlayerController.videoList.length,
+                        itemBuilder: (context, index){
+
+                          var video = _videoPlayerController.videoList.elementAt(index);
+
+                          return _videoPlayerController.videoList.isNotEmpty ? AnimationConfiguration.staggeredGrid(
+                            columnCount: 2,
+                            position: index,
+                            duration: const Duration(milliseconds: 375),
+                            child: GestureDetector(
+                                onTap: (){
+                                  _videoId = video.id;
+                                  displayDialog(context, VideoMediaPlayer(videoId: video.id!));
+                                },
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: ContainerPlus(
+                                        //     color: Colors.red,
+                                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                                          child: listVideos(video.id, video.image, video.title, index)
+                                      ),
+                                    ),
+                                  ],
+                                )
+                            ),
+                          ) : Center(
+                              child: TextPlus('Nenhum dado encontrado!', color: Colors.white));
+                        },
+                      ),
+
+
+                      // child: FutureBuilder<List<VideoModel>?>(
+                      //     future: _listVideos(_result),
+                      //     builder:(context, snapshot){
+                      //       switch (snapshot.connectionState){
+                      //         case ConnectionState.none:
+                      //         case ConnectionState.waiting:
+                      //           return const Center(
+                      //             child: CircularProgressIndicator(),
+                      //           );
+                      //         case ConnectionState.active:
+                      //         case ConnectionState.done:
+                      //           if( snapshot.hasData ){
+                      //             return ListView.builder(
+                      //               padding: const EdgeInsets.all(4),
+                      //               physics: const BouncingScrollPhysics(),
+                      //               addAutomaticKeepAlives: true,
+                      //               itemCount: snapshot.data?.length,
+                      //               itemBuilder: (context, index){
+                      //
+                      //                 List<VideoModel>? videos = snapshot.data;
+                      //                 VideoModel? video = videos![index];
+                      //
+                      //                 return AnimationConfiguration.staggeredGrid(
+                      //                   columnCount: 2,
+                      //                   position: index,
+                      //                   duration: const Duration(milliseconds: 375),
+                      //                   child: GestureDetector(
+                      //                       onTap: (){
+                      //                         _videoId = video.id;
+                      //                         displayDialog(context, VideoMediaPlayer(videoId: video.id!));
+                      //                       },
+                      //                       child: Row(
+                      //                         children: [
+                      //                           Expanded(
+                      //                             child: ContainerPlus(
+                      //                               //     color: Colors.red,
+                      //                                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                      //                                 child: listVideos(video.id, video.image, video.title, index)
+                      //                             ),
+                      //                           ),
+                      //                         ],
+                      //                       )
+                      //                   ),
+                      //                 );
+                      //               },
+                      //             );
+                      //           }else{
+                      //             // return listVideos();
+                      //             return const Center(
+                      //               child: Text('Nenhum dado encontrado!'),
+                      //             );
+                      //           }
+                      //       }
+                      //     }
+                      // ),
+                    ) : Center(
+                        child: TextPlus('Nenhum dado encontrado!', fontSize: 18, color: Colors.white)
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

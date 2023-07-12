@@ -1,30 +1,23 @@
-class MusicPlaylistModel{
+import 'package:dml_music/models/music_playlist_model.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
+class PlaylistModel{
   int? id;
-  String? music;
-  String? band;
-  dynamic musicPlay;
-  dynamic albumImage;
+  String? playlistName;
+  List<MusicPlaylistModel> musics = [];
 
-  MusicPlaylistModel();
+  PlaylistModel();
 
-  MusicPlaylistModel.map(Map<String, dynamic> json){
+  PlaylistModel.map(Map<String, dynamic> json) {
     id = json['id'];
-    music = json['music'];
-    band = json['band'];
-    musicPlay = json['musicPlay'];
-    albumImage = json['albumImage'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['music'] = music;
-    data['band'] = band;
-    data['musicPlay'] = musicPlay;
-    data['albumImage'] = albumImage;
-
-    return data;
+    playlistName = json['playlistName'];
+    if(json['listPlaylist'] != null){
+      var list = json['listPlaylist'] as List;
+      musics = list.map((playlist) => MusicPlaylistModel.map(playlist)).toList();
+    }
+    else{
+      musics = [];
+    }
   }
 
 }

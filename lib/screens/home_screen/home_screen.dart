@@ -328,12 +328,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const SizedBox(width: 10,),
-                InkWell(onTap: (){
-                  displayDialog(
-                      context,
-                      const HomeVideoScreen()
-                  );
+                const SizedBox(width: 10),
+                InkWell(
+                  onTap: (){
+                    // Navigator.pushReplacement(
+                    //     context, MaterialPageRoute(builder: (BuildContext context) => const HomeVideoScreen()));
+                    mediaPlayerController.wipeData();
+                    mediaPlayerController.stop();
+                    displayDialog(
+                        context, const HomeVideoScreen()
+                    );
                 },
                   child: ContainerPlus(
                     color: Colors.black.withOpacity(0.4),

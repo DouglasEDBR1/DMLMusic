@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:mobx/mobx.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:path_provider/path_provider.dart';
-import '../models/playlist_model.dart';
+import '../models/music_playlist_model.dart';
 part 'picker_file_controller.g.dart';
 
 class PickerFileController = _PickerFileController with _$PickerFileController;
