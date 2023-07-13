@@ -1,4 +1,4 @@
-class MusicPlaylistModel{
+class MusicModel{
 
   int? id;
   String? music;
@@ -6,14 +6,14 @@ class MusicPlaylistModel{
   dynamic musicPlay;
   dynamic albumImage;
 
-  MusicPlaylistModel();
+  MusicModel();
 
-  MusicPlaylistModel.map(Map<String, dynamic> json){
-    id = json['id'];
-    music = json['music'];
-    band = json['band'];
-    musicPlay = json['musicPlay'];
-    albumImage = json['albumImage'];
+  MusicModel.map(Map<String, dynamic> json){
+    id = json['musics']['id'];
+    music = json['musics']['music'];
+    band = json['musics']['band'];
+    musicPlay = json['musics']['musicPlay'];
+    albumImage = json['musics']['albumImage'];
   }
 
   Map<String, dynamic> toJson() {

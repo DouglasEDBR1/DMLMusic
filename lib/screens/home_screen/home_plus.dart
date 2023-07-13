@@ -1,5 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:dml_music/screens/home_screen/methods/album_background_image_widget.dart';
+import 'package:dml_music/screens/playlist/home_playlist_screen.dart';
 import 'package:dml_music/screens/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -40,7 +41,7 @@ class _HomePlusScreenState extends State<HomePlusScreen> {
   }
 
   final List<Widget> _children = [
-    const PlaylistLocalScreen(),
+    const HomePlaylistScreen(),
     const HomeScreen(),
     const SettingsScreen(),
   ];

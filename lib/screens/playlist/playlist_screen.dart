@@ -1,3 +1,4 @@
+import 'package:dml_music/models/playlist_model.dart';
 import 'package:dml_music/utils/media_player_util.dart';
 import 'package:dml_music/widget/background_layout.dart';
 import 'package:file_picker/file_picker.dart';
@@ -17,7 +18,10 @@ import 'dart:io';
 
 
 class PlaylistLocalScreen extends StatefulWidget {
-  const PlaylistLocalScreen({Key? key}) : super(key: key);
+
+  PlaylistModelx playlist = PlaylistModelx();
+
+  PlaylistLocalScreen({Key? key, required this.playlist}) : super(key: key);
 
   @override
   State<PlaylistLocalScreen> createState() => _PlaylistLocalScreenState();
@@ -51,71 +55,85 @@ class _PlaylistLocalScreenState extends State<PlaylistLocalScreen> {
       backgroundColor: Colors.black87,
       body: _buildBody(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: _floatingActionButton(),
+      floatingActionButton: _floatingMusicActionButton(),
     );
   }
 
   _buildBody() {
-    return ContainerPlus(
-      child: Stack(
-        children: [
-          const BackgroundLayout(),
-          ContainerPlus(
-            padding: const EdgeInsets.only(top: 82, left: 16, right: 9),
-            height: 140,
-            width: double.infinity,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TextPlus(
-                      'Minha Playlist',
-                      fontSize: 22,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                    ),
-                    const SizedBox(width: 10,),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          const Positioned(
-              left: 300,
-              top: 12,
-              child: IconAnimatedUtils(size: 60,)
-          ),
-          Observer(builder: (_) => Padding(
-            padding: const EdgeInsets.only(top: 140),
-            child: ContainerPlus(
+    return Observer(builder: (_) => ContainerPlus(
+        child: Stack(
+          children: [
+            const BackgroundLayout(),
+            ContainerPlus(
+              padding: const EdgeInsets.only(top: 82, left: 16, right: 16),
+              height: 140,
+              width: double.infinity,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: const EdgeInsets.all(4),
-                      shrinkWrap: true,
-                      addRepaintBoundaries: true,
-                      addAutomaticKeepAlives: true,
-                      itemCount: pickerFileController.playlist.length,
-                      itemBuilder:  (_, index) {
-                        var playList = pickerFileController.playlist.elementAt(index);
-                        return _createItemList(context, index, playList);
-                      }
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: (){
+                          // Navigator.of(context).pop();
+                          pickerFileController.isPlaylistScreen = false;
+                        },
+                        child: const Icon(Icons.arrow_back, color: Colors.white, size: 28),
+                      ),
+                     //const SizedBox(width: 16),
+                      TextPlus(
+                        widget.playlist.playlistName,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(width: 16),
+                    ],
                   ),
                 ],
               ),
             ),
-          ),
-          ),
-          Positioned.fill(
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: isDialog ? _dialogCustomPlaylist(context) : Container(),
+            const Positioned(
+                left: 300,
+                top: 12,
+                child: IconAnimatedUtils(size: 60,)
             ),
-          )
-        ],
+            Padding(
+              padding: const EdgeInsets.only(top: 140),
+              child: ContainerPlus(
+                child: Column(
+                  children: [
+                    pickerFileController.listPlaylist[0].musics != null && pickerFileController.listPlaylist[0].musics!.isNotEmpty
+                     ? ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.all(4),
+                        shrinkWrap: true,
+                        addRepaintBoundaries: true,
+                        addAutomaticKeepAlives: true,
+                        itemCount: pickerFileController.listPlaylist[0].musics!.length,
+                        itemBuilder:  (_, index) {
+                          print(index);
+                          var playList = pickerFileController.listPlaylist[0].musics!.elementAt(index);
+                          return _createMusicList(context, index, playList);
+                        }
+                    ) : ContainerPlus(
+                      alignment: Alignment.center,
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height * 0.6,
+                        child: TextPlus('Nenhuma música encontrada!', fontSize: 20, color: Colors.white)),
+                  ],
+                ),
+              ),
+            ),
+            Positioned.fill(
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: isDialog ? _dialogCustomMusic(context) : Container(),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -199,7 +217,7 @@ class _PlaylistLocalScreenState extends State<PlaylistLocalScreen> {
     return File(file.path!).copy(newFileMusic.path);
   }
 
-  Widget _dialogCustomPlaylist(BuildContext context) {
+  Widget _dialogCustomMusic(BuildContext context) {
     return Observer(builder: (_) => ContainerPlus(
         child: Align(
             alignment: Alignment.center,
@@ -233,8 +251,8 @@ class _PlaylistLocalScreenState extends State<PlaylistLocalScreen> {
                           children: [
                             ContainerPlus(
                                 onTap: () {
-                                  if (pickerFileController.fileMusicName != null) {
-                                    pickerFileController.saveMusic();
+                                  if (pickerFileController.fileMusicName != null && widget.playlist.id != null) {
+                                    pickerFileController.saveMusic(widget.playlist);
                                     setState(() {
                                       labelMusicName = 'Adicionar música';
                                       labelImageName = 'Adicionar imagem';
@@ -242,18 +260,18 @@ class _PlaylistLocalScreenState extends State<PlaylistLocalScreen> {
                                     });
                                   }
                                 },
-                                child: _actionButton('Confirmar', pickerFileController.fileMusicName != null ? Colors.white : Colors.white10)),
+                                child: _actionMusicButton('Confirmar', pickerFileController.fileMusicName != null ? Colors.white : Colors.white10)),
                             const SizedBox(height: 18),
                             ContainerPlus(
                               onTap: () {
                                 setState(() {
-                                  pickerFileController.limparDados();
+                                  pickerFileController.clearMusicData();
                                   labelMusicName = 'Adicionar música';
                                   labelImageName = 'Adicionar imagem';
                                   isDialog = false;
                                 });
                               },
-                              child: _actionButton(
+                              child: _actionMusicButton(
                                   'Cancelar', Colors.white
                               ),
                             ),
@@ -302,7 +320,7 @@ class _PlaylistLocalScreenState extends State<PlaylistLocalScreen> {
     );
   }
 
-  Widget _actionButton(String buttonName, Color color){
+  Widget _actionMusicButton(String buttonName, Color color){
     return  ContainerPlus(
       radius: RadiusPlus.all(20),
       width: 300,
@@ -323,7 +341,7 @@ class _PlaylistLocalScreenState extends State<PlaylistLocalScreen> {
     );
   }
 
-  Widget _floatingActionButton(){
+  Widget _floatingMusicActionButton(){
     return InkWell(
       onTap: (){
         setState(() {
@@ -356,14 +374,14 @@ class _PlaylistLocalScreenState extends State<PlaylistLocalScreen> {
     );
   }
 
-  Widget _createItemList(context, index, MusicPlaylistModel musicPlaylist){
+  Widget _createMusicList(context, index, MusicModel musicPlaylist){
 
     return Dismissible(
       key: Key( DateTime.now().millisecondsSinceEpoch.toString() ),
       direction: DismissDirection.endToStart,
       onDismissed: (direction){
         //Remove item da lista
-        pickerFileController.deleteFile(musicPlaylist);
+        pickerFileController.musicDelete(musicPlaylist);
 
         final snackbar = SnackBar(
           duration: const Duration(seconds: 5),
@@ -396,14 +414,14 @@ class _PlaylistLocalScreenState extends State<PlaylistLocalScreen> {
         padding: const EdgeInsets.only(top: 8),
         child: Column(
           children: [
-            _cardAlbumImage(musicPlaylist),
+            _cardMusic(musicPlaylist),
           ],
         ),
       ),
     );
   }
 
-  Widget _cardAlbumImage(MusicPlaylistModel musicPlaylist){
+  Widget _cardMusic(MusicModel musicPlaylist){
 
     return ContainerPlus(
       color: Colors.black.withOpacity(0.2),

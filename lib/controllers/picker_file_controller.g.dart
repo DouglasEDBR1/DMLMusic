@@ -9,19 +9,51 @@ part of 'picker_file_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$PickerFileController on _PickerFileController, Store {
-  late final _$playlistModelAtom =
-      Atom(name: '_PickerFileController.playlistModel', context: context);
+  late final _$isPlaylistScreenAtom =
+      Atom(name: '_PickerFileController.isPlaylistScreen', context: context);
 
   @override
-  MusicPlaylistModel get playlistModel {
-    _$playlistModelAtom.reportRead();
-    return super.playlistModel;
+  bool get isPlaylistScreen {
+    _$isPlaylistScreenAtom.reportRead();
+    return super.isPlaylistScreen;
   }
 
   @override
-  set playlistModel(MusicPlaylistModel value) {
-    _$playlistModelAtom.reportWrite(value, super.playlistModel, () {
-      super.playlistModel = value;
+  set isPlaylistScreen(bool value) {
+    _$isPlaylistScreenAtom.reportWrite(value, super.isPlaylistScreen, () {
+      super.isPlaylistScreen = value;
+    });
+  }
+
+  late final _$listPlaylistAtom =
+      Atom(name: '_PickerFileController.listPlaylist', context: context);
+
+  @override
+  ObservableList<PlaylistModelx> get listPlaylist {
+    _$listPlaylistAtom.reportRead();
+    return super.listPlaylist;
+  }
+
+  @override
+  set listPlaylist(ObservableList<PlaylistModelx> value) {
+    _$listPlaylistAtom.reportWrite(value, super.listPlaylist, () {
+      super.listPlaylist = value;
+    });
+  }
+
+  late final _$musicsAtom =
+      Atom(name: '_PickerFileController.musics', context: context);
+
+  @override
+  ObservableList<MusicModel> get musics {
+    _$musicsAtom.reportRead();
+    return super.musics;
+  }
+
+  @override
+  set musics(ObservableList<MusicModel> value) {
+    _$musicsAtom.reportWrite(value, super.musics, () {
+      super.musics = value;
     });
   }
 
@@ -29,15 +61,31 @@ mixin _$PickerFileController on _PickerFileController, Store {
       Atom(name: '_PickerFileController.playlist', context: context);
 
   @override
-  ObservableList<MusicPlaylistModel> get playlist {
+  PlaylistModelx get playlist {
     _$playlistAtom.reportRead();
     return super.playlist;
   }
 
   @override
-  set playlist(ObservableList<MusicPlaylistModel> value) {
+  set playlist(PlaylistModelx value) {
     _$playlistAtom.reportWrite(value, super.playlist, () {
       super.playlist = value;
+    });
+  }
+
+  late final _$musicModelAtom =
+      Atom(name: '_PickerFileController.musicModel', context: context);
+
+  @override
+  MusicModel get musicModel {
+    _$musicModelAtom.reportRead();
+    return super.musicModel;
+  }
+
+  @override
+  set musicModel(MusicModel value) {
+    _$musicModelAtom.reportWrite(value, super.musicModel, () {
+      super.musicModel = value;
     });
   }
 
@@ -54,6 +102,22 @@ mixin _$PickerFileController on _PickerFileController, Store {
   set fileToDisplay(dynamic value) {
     _$fileToDisplayAtom.reportWrite(value, super.fileToDisplay, () {
       super.fileToDisplay = value;
+    });
+  }
+
+  late final _$playlistNameAtom =
+      Atom(name: '_PickerFileController.playlistName', context: context);
+
+  @override
+  String? get playlistName {
+    _$playlistNameAtom.reportRead();
+    return super.playlistName;
+  }
+
+  @override
+  set playlistName(String? value) {
+    _$playlistNameAtom.reportWrite(value, super.playlistName, () {
+      super.playlistName = value;
     });
   }
 
@@ -105,6 +169,22 @@ mixin _$PickerFileController on _PickerFileController, Store {
     });
   }
 
+  late final _$imagePlaylistAtom =
+      Atom(name: '_PickerFileController.imagePlaylist', context: context);
+
+  @override
+  dynamic get imagePlaylist {
+    _$imagePlaylistAtom.reportRead();
+    return super.imagePlaylist;
+  }
+
+  @override
+  set imagePlaylist(dynamic value) {
+    _$imagePlaylistAtom.reportWrite(value, super.imagePlaylist, () {
+      super.imagePlaylist = value;
+    });
+  }
+
   late final _$imageAlbumAtom =
       Atom(name: '_PickerFileController.imageAlbum', context: context);
 
@@ -145,12 +225,20 @@ mixin _$PickerFileController on _PickerFileController, Store {
     return _$_getFileAsyncAction.run(() => super._getFile());
   }
 
-  late final _$saveFileAsyncAction =
-      AsyncAction('_PickerFileController.saveFile', context: context);
+  late final _$saveFilePlaylistAsyncAction =
+      AsyncAction('_PickerFileController.saveFilePlaylist', context: context);
 
   @override
-  Future saveFile() {
-    return _$saveFileAsyncAction.run(() => super.saveFile());
+  Future saveFilePlaylist() {
+    return _$saveFilePlaylistAsyncAction.run(() => super.saveFilePlaylist());
+  }
+
+  late final _$saveFileMusicAsyncAction =
+      AsyncAction('_PickerFileController.saveFileMusic', context: context);
+
+  @override
+  Future saveFileMusic() {
+    return _$saveFileMusicAsyncAction.run(() => super.saveFileMusic());
   }
 
   late final _$readFileAsyncAction =
@@ -161,25 +249,45 @@ mixin _$PickerFileController on _PickerFileController, Store {
     return _$readFileAsyncAction.run(() => super.readFile());
   }
 
-  late final _$deleteFileAsyncAction =
-      AsyncAction('_PickerFileController.deleteFile', context: context);
+  late final _$musicDeleteAsyncAction =
+      AsyncAction('_PickerFileController.musicDelete', context: context);
 
   @override
-  Future deleteFile(MusicPlaylistModel musicPlaylist) {
-    return _$deleteFileAsyncAction.run(() => super.deleteFile(musicPlaylist));
+  Future musicDelete(MusicModel musicPlaylist) {
+    return _$musicDeleteAsyncAction.run(() => super.musicDelete(musicPlaylist));
+  }
+
+  late final _$playlistDeleteAsyncAction =
+      AsyncAction('_PickerFileController.playlistDelete', context: context);
+
+  @override
+  Future playlistDelete(PlaylistModelx playlist) {
+    return _$playlistDeleteAsyncAction
+        .run(() => super.playlistDelete(playlist));
   }
 
   late final _$undoDeleteAsyncAction =
       AsyncAction('_PickerFileController.undoDelete', context: context);
 
   @override
-  Future undoDelete(int index, MusicPlaylistModel musicPlaylist) {
+  Future undoDelete(int index, MusicModel musicPlaylist) {
     return _$undoDeleteAsyncAction
         .run(() => super.undoDelete(index, musicPlaylist));
   }
 
   late final _$_PickerFileControllerActionController =
       ActionController(name: '_PickerFileController', context: context);
+
+  @override
+  dynamic setPlaylistName(String value) {
+    final _$actionInfo = _$_PickerFileControllerActionController.startAction(
+        name: '_PickerFileController.setPlaylistName');
+    try {
+      return super.setPlaylistName(value);
+    } finally {
+      _$_PickerFileControllerActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   dynamic setMusicPlay(String value) {
@@ -209,6 +317,17 @@ mixin _$PickerFileController on _PickerFileController, Store {
         name: '_PickerFileController.setImageAlbum');
     try {
       return super.setImageAlbum(value);
+    } finally {
+      _$_PickerFileControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setImagePlaylist(dynamic value) {
+    final _$actionInfo = _$_PickerFileControllerActionController.startAction(
+        name: '_PickerFileController.setImagePlaylist');
+    try {
+      return super.setImagePlaylist(value);
     } finally {
       _$_PickerFileControllerActionController.endAction(_$actionInfo);
     }
@@ -248,22 +367,55 @@ mixin _$PickerFileController on _PickerFileController, Store {
   }
 
   @override
-  dynamic saveMusic() {
+  dynamic initPlaylist() {
     final _$actionInfo = _$_PickerFileControllerActionController.startAction(
-        name: '_PickerFileController.saveMusic');
+        name: '_PickerFileController.initPlaylist');
     try {
-      return super.saveMusic();
+      return super.initPlaylist();
     } finally {
       _$_PickerFileControllerActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  dynamic limparDados() {
+  dynamic savePlaylist() {
     final _$actionInfo = _$_PickerFileControllerActionController.startAction(
-        name: '_PickerFileController.limparDados');
+        name: '_PickerFileController.savePlaylist');
     try {
-      return super.limparDados();
+      return super.savePlaylist();
+    } finally {
+      _$_PickerFileControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic saveMusic(PlaylistModelx playlist) {
+    final _$actionInfo = _$_PickerFileControllerActionController.startAction(
+        name: '_PickerFileController.saveMusic');
+    try {
+      return super.saveMusic(playlist);
+    } finally {
+      _$_PickerFileControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic clearPlaylistData() {
+    final _$actionInfo = _$_PickerFileControllerActionController.startAction(
+        name: '_PickerFileController.clearPlaylistData');
+    try {
+      return super.clearPlaylistData();
+    } finally {
+      _$_PickerFileControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic clearMusicData() {
+    final _$actionInfo = _$_PickerFileControllerActionController.startAction(
+        name: '_PickerFileController.clearMusicData');
+    try {
+      return super.clearMusicData();
     } finally {
       _$_PickerFileControllerActionController.endAction(_$actionInfo);
     }
@@ -272,12 +424,17 @@ mixin _$PickerFileController on _PickerFileController, Store {
   @override
   String toString() {
     return '''
-playlistModel: ${playlistModel},
+isPlaylistScreen: ${isPlaylistScreen},
+listPlaylist: ${listPlaylist},
+musics: ${musics},
 playlist: ${playlist},
+musicModel: ${musicModel},
 fileToDisplay: ${fileToDisplay},
+playlistName: ${playlistName},
 title: ${title},
 fileMusicName: ${fileMusicName},
 bandTitle: ${bandTitle},
+imagePlaylist: ${imagePlaylist},
 imageAlbum: ${imageAlbum},
 musicPlay: ${musicPlay}
     ''';
