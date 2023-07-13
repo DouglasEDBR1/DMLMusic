@@ -11,9 +11,6 @@ class PickerFileController = _PickerFileController with _$PickerFileController;
 
 abstract class _PickerFileController with Store {
 
-  // @observable
-  // PlaylistModelx playlist = PlaylistModelx();
-
   @observable
   bool isPlaylistScreen = false;
 
@@ -82,8 +79,6 @@ abstract class _PickerFileController with Store {
       listPlaylist.clear();
       var list = json.decode(dados) as List;
       listPlaylist.addAll(list.map((e) => PlaylistModelx.map(e)).toList());
-      // musics.addAll(list.map((e) => MusicModel.map(e.musics)).toList());
-      print(listPlaylist);
     });
   }
 
@@ -132,40 +127,41 @@ abstract class _PickerFileController with Store {
 
   @action
   musicDelete(MusicModel musicPlaylist) async {
-    musics.removeWhere((element) => element == musicPlaylist);
-    _reorderMusics();
+    listPlaylist[playlist.id! - 1].musics!.removeWhere((element) => element == musicPlaylist);
+   _reorderMusics(musicPlaylist);
     saveFileMusic();
     clearMusicData();
   }
 
   @action
   playlistDelete(PlaylistModelx playlist) async {
-    this.listPlaylist.removeWhere((element) => element == playlist);
-    _reorderMusics();
+    listPlaylist.removeWhere((element) => element == playlist);
+    //_reorderMusics();
     saveFilePlaylist();
     clearMusicData();
   }
 
   @action
   undoDelete(int index, MusicModel musicPlaylist) async {
-    musics.insert(index, musicPlaylist);
-   _reorderMusics();
+    listPlaylist[playlist.id! - 1].musics!.insert(musicPlaylist.id! - 1, musicPlaylist);
+    _reorderMusics(musicPlaylist);
     saveFileMusic();
     clearMusicData();
   }
 
-  _reorderMusics() {
+  _reorderMusics(MusicModel music) {
     List<MusicModel> musicsAux = [];
-    musicsAux.addAll(musics);
-    musics.clear();
+    musicsAux.addAll(listPlaylist[playlist.id! - 1].musics!);
+    listPlaylist[playlist.id! - 1].musics!.clear();
     musicsAux.map((e) {
       MusicModel newMusic = MusicModel();
-      newMusic.id = musics.length + 1;
+      newMusic.id = listPlaylist[playlist.id! - 1].musics!.length + 1;
       newMusic.albumImage = e.albumImage;
       newMusic.music = e.music;
       newMusic.band = e.band;
       newMusic.musicPlay = e.musicPlay;
-      musics.add(newMusic);
+      listPlaylist[playlist.id! - 1].musics!.add(newMusic);
+      initPlaylist();
     }).toList();
   }
 
@@ -195,13 +191,11 @@ abstract class _PickerFileController with Store {
     newMusic.musicPlay = fileToDisplay;
     newMusic.albumImage = imageAlbum;
 
-    //musics.add(newMusic);
-    this.listPlaylist.map((element) => element.id == playlist.id ? element.musics!.add(newMusic) : null).toList();
-    print(this.listPlaylist);
-    print(playlist);
+    listPlaylist.map((element) => element.id == playlist.id ? element.musics!.add(newMusic) : null).toList();
 
     saveFileMusic();
     clearMusicData();
+    initPlaylist();
   }
 
   @action

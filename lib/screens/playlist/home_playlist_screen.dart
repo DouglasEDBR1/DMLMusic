@@ -72,14 +72,20 @@ class _HomePlaylistScreenState extends State<HomePlaylistScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      InkWell(
-                        onTap: (){
-                          // Navigator.of(context).pop();
-                          setState((){
-                            isPlaylistScreen = false;
-                          });
-                        },
-                        child: const Icon(Icons.arrow_back, color: Colors.white, size: 28),
+                      Visibility(
+                        visible: isPlaylistScreen,
+                        child: InkWell(
+                          onTap: (){
+                            // Navigator.of(context).pop();
+                            setState((){
+                              isPlaylistScreen = false;
+                            });
+                          },
+                          child: const Icon(
+                              Icons.arrow_back,
+                              color: Colors.white, size: 28
+                          ),
+                        ),
                       ),
                       TextPlus(
                         !isPlaylistScreen ? 'Minhas Playlist\'s' : _titlePlaylist,
